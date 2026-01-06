@@ -1,4 +1,3 @@
-<!-- START OF FILE index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -22,12 +21,10 @@
     appId: "1:669905270724:web:c89fcc1d9c8f81b3071691",
     measurementId: "G-H1ME51B4MZ"
   };
-  // Firebase 시작
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 </script>
 <script>
-  // [보안] 로그인 세션 체크
   if(sessionStorage.getItem('kac_access_token') !== 'granted') {
     location.replace('login.html');
   }
@@ -44,6 +41,8 @@
     --header-h: 75px;
     --search-border: #cbd5e1;
     --search-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+    --icon-size-idx: 60px;
+    --label-size-idx: 24px;
   }
 
   body.dark-mode {
@@ -57,69 +56,34 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-  
   html, body { width: 100%; height: 100%; overflow: hidden; }
-  
-  body { 
-    background: var(--bg-main); display: flex; flex-direction: column; 
-    color: var(--text-main); transition: background 0.3s, color 0.3s; 
-  }
+  body { background: var(--bg-main); display: flex; flex-direction: column; color: var(--text-main); transition: background 0.3s, color 0.3s; }
 
   /* 모달 스타일 */
-  .modal-overlay { 
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7); 
-      z-index: 9999; display: none !important; 
-      align-items: center; justify-content: center; 
-  }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; display: none !important; align-items: center; justify-content: center; }
   .modal-overlay[style*="display: flex"] { display: flex !important; }
+  .modal-card { background: var(--bg-card); padding: 35px; border-radius: 25px; width: 450px; color: var(--text-main); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; }
+  .modal-card.large { width: 1000px; max-width: 95%; height: 85vh; }
+  .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--btn-border); padding-bottom: 10px; }
 
-  body.preview-active .card-ctrl, body.preview-active .add-slot { display: none !important; }
-  
   /* 헤더 스타일 */
-  header { 
-    height: var(--header-h); background: var(--navy); 
-    display: flex; align-items: center; justify-content: space-between; 
-    padding: 0 20px; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-    z-index: 5000; position: fixed; top: 0; left: 0; width: 100%;
-  }
-  
+  header { height: var(--header-h); background: var(--navy); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 5000; position: fixed; top: 0; left: 0; width: 100%; }
   .header-left { display: flex; align-items: center; gap: 15px; z-index: 10; min-width: 0; flex-shrink: 1; }
   .hamburger-btn { cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.2s; flex-shrink: 0; }
   .hamburger-btn:hover { background: rgba(255,255,255,0.1); }
   .hamburger-btn svg { width: 24px; height: 24px; fill: #fff; }
-
-  .logo-text { 
-    font-size: 20px; font-weight: 800; letter-spacing: -0.5px; 
-    cursor: pointer; white-space: nowrap; 
-    overflow: hidden; text-overflow: ellipsis;
-  }
-  
-  /* 헤더 중앙 페이지 제목 */
-  .header-center-title {
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      z-index: 5; white-space: nowrap;
-  }
+  .logo-text { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-center-title { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; gap: 10px; z-index: 5; white-space: nowrap; }
   .page-headline { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -0.5px; cursor: default; }
   body.admin-mode .page-headline { cursor: pointer; opacity: 0.9; }
-  body.admin-mode .page-headline:hover { color: #bfdbfe; }
-
-  .page-badge {
-      font-size: 12px; font-weight: 800; color: #0f172a;
-      background: #38bdf8; padding: 4px 10px; border-radius: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-
+  .page-badge { font-size: 12px; font-weight: 800; color: #0f172a; background: #38bdf8; padding: 4px 10px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
   .header-right { display: flex; align-items: center; gap: 15px; z-index: 10; flex-shrink: 0; }
-  
   .theme-toggle { display: flex; gap: 5px; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); margin-right: 10px; }
   .theme-btn { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; opacity: 0.5; }
   .theme-btn.active { background: #fff; opacity: 1; color: var(--navy); }
   .theme-btn svg { width: 16px; height: 16px; fill: currentColor; }
-  
   .kac-logo-img { height: 30px; width: auto; display: block; object-fit: contain; }
   .settings-btn { display: flex; padding: 8px; width: 34px; height: 34px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: 0.3s; color: #cbd5e1; }
-  .settings-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
 
   /* 사이드바 */
   .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 6000; opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(2px); }
@@ -127,130 +91,66 @@
   .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100vh; background: var(--bg-card); z-index: 6001; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 5px 0 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; border-right: 1px solid var(--btn-border); }
   .sidebar.active { left: 0; }
   .sidebar-header { height: var(--header-h); display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--btn-border); font-weight: 800; font-size: 18px; justify-content: space-between; color: var(--text-main); }
-  .sidebar-close { cursor: pointer; padding: 8px; border-radius: 50%; transition: 0.2s; }
-  .sidebar-close:hover { background: var(--btn-bg); }
   .sidebar-content { flex: 1; overflow-y: auto; padding: 10px; }
-  .sb-item { padding: 12px 15px; cursor: pointer; border-radius: 10px; color: var(--text-main); font-weight: 600; transition: 0.2s; display: flex; align-items: center; justify-content: space-between; font-size: 14px; }
+  .sb-item { padding: 12px 15px; cursor: pointer; border-radius: 10px; color: var(--text-main); font-weight: 600; display: flex; align-items: center; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
   .sb-item:hover { background: var(--btn-bg); color: #2563eb; }
   .sb-sub-list { display: none; padding-left: 20px; margin-bottom: 5px; }
   .sb-sub-list.open { display: block; animation: slideDown 0.2s; }
   .sb-sub-item { padding: 8px 15px; font-size: 13px; color: var(--text-sub); cursor: pointer; border-left: 2px solid var(--btn-border); transition: 0.2s; }
   .sb-sub-item:hover { border-left-color: #2563eb; color: #2563eb; background: rgba(37,99,235,0.05); }
 
-  /* 컨텐츠 영역 */
-  .content-wrapper { 
-      width: 100%; height: 100%;
-      padding-top: 135px;
-      padding-bottom: 120px; 
-      overflow: hidden; 
-      position: relative; 
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-  }
+  /* 검색 및 카드 영역 */
+  .content-wrapper { width: 100%; height: 100%; padding-top: 135px; padding-bottom: 120px; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+  .search-bar { width: 100%; padding: 18px 30px 18px 65px; border-radius: 50px; border: 2px solid #cbd5e1; background: #fff; color: #000; font-size: 16px; font-weight: 600; box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12); transition: 0.3s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 25px center; background-size: 24px; }
+  .search-results { position: absolute; top: calc(100% + 15px); left: 0; right: 0; background: var(--bg-card); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; max-height: 400px; overflow-y: auto; z-index: 2001; }
+  .search-results.active { display: block; }
   
-  .center-content-box { width: 100%; max-width: 1700px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #cardContainer { display: flex; flex-wrap: wrap; gap: 30px; width: 100%; justify-content: center; padding: 20px; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s; }
+  .card { background: var(--bg-card); width: 280px; height: 280px; padding: 30px 20px; border-radius: 25px; box-shadow: var(--shadow); border: var(--border-card); cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-left: 10px solid transparent; color: var(--text-main); --card-color: #64748b; border-left-color: var(--card-color); }
+  .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px -5px var(--card-color); }
+  .icon-box { width: 100px; height: 100px; border-radius: 30px; margin-bottom: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: var(--btn-bg); border: 1px solid var(--btn-border); font-size: var(--icon-size-idx, 60px); color: var(--card-color); }
+  .card h2 { font-size: var(--label-size-idx, 24px); font-weight: 800; text-align: center; }
 
-  /* 검색창 */
-  .search-wrapper-outer { width: 100%; display: flex; justify-content: center; margin-bottom: 40px; flex-shrink: 0; z-index: 2000; position: relative; padding: 0 20px; pointer-events: none; }
-  .search-container { position: relative; width: 600px; max-width: 100%; pointer-events: auto; }
-  
-  .search-bar { 
-    width: 100%; padding: 18px 30px; border-radius: 50px; 
-    border: 2px solid #cbd5e1; background: #fff; color: #000;
-    font-size: 16px; font-weight: 600; 
-    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12); transition: 0.3s; 
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z'/%3E%3C/svg%3E"); 
-    background-repeat: no-repeat; background-position: 25px center; background-size: 24px; padding-left: 65px; 
-  }
-  .search-bar:focus { outline: none; border-color: #2563eb; box-shadow: 0 12px 40px rgba(37, 99, 235, 0.18); transform: translateY(-2px); }
-  body.dark-mode .search-bar { background: #1e293b; color: #fff; border-color: #475569; }
+  /* 푸터 및 QR */
+  .main-footer { width: 100%; height: auto; background: var(--navy); padding: 25px 30px; text-align: center; color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.1); position: absolute; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; gap: 40px; z-index: 1000; }
+  .qr-code-img { width: 65px; height: 65px; background: white; padding: 4px; border-radius: 10px; cursor: pointer; }
+  .qr-zoom-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: none; align-items: center; justify-content: center; flex-direction: column; cursor: zoom-out; backdrop-filter: blur(10px); }
+  .qr-zoom-overlay img { width: 400px; height: 400px; background: white; padding: 20px; border-radius: 20px; }
 
-  .search-results { position: absolute; top: calc(100% + 15px); left: 0; right: 0; width: 100%; background: var(--bg-card); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-card); overflow: hidden; display: none; max-height: 400px; overflow-y: auto; z-index: 2001; }
-  .search-results.active { display: block; animation: slideDown 0.2s ease-out; }
-  #searchOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1500; display: none; backdrop-filter: blur(2px); animation: fadeIn 0.3s; }
-  #searchOverlay.active { display: block; }
-
-  /* 메인 카드 영역 */
-  #cardContainerWrapper { width: 100%; max-width: 1700px; overflow: hidden; padding: 0 20px; flex-shrink: 0; }
-  #cardContainer { 
-    display: flex; flex-wrap: wrap; gap: 30px; width: 100%; justify-content: center; padding: 20px; 
-    transform-style: preserve-3d; min-height: auto; 
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s;
-  }
-  
-  .card { background: var(--bg-card); width: 280px; height: 280px; padding: 30px 20px; border-radius: 25px; box-shadow: var(--shadow); border: var(--border-card); cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-left: 10px solid transparent; color: var(--text-main); --card-color: #64748b; border-left-color: var(--card-color); z-index: 1; }
-  .card:hover { transform: translateY(-10px); border-color: var(--card-color); box-shadow: 0 15px 30px -5px var(--card-color); z-index: 2; }
-  
-  body.admin-mode .card .card-ctrl { display: flex; }
-  .icon-box { width: 100px; height: 100px; border-radius: 30px; margin-bottom: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: var(--btn-bg); border: 1px solid var(--btn-border); font-size: var(--icon-size-idx, 60px); color: var(--card-color); pointer-events: none; }
-  .card h2 { font-size: var(--label-size-idx, 24px); font-weight: 800; text-align: center; pointer-events: none; }
-
-  .pagination { display: flex; gap: 10px; margin-top: 20px; align-items: center; justify-content: center; flex-shrink: 0; }
-  .page-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--btn-border); cursor: pointer; transition: 0.3s; }
-  .page-dot.active { background: var(--navy); transform: scale(1.3); }
-
-  /* 하단바 (Footer) - QR코드 위치 최적화 */
-  .main-footer {
-    width: 100%; height: auto;
-    background: var(--navy); padding: 25px 30px;
-    text-align: center; color: rgba(255,255,255,0.7);
-    font-size: 13px; line-height: 1.6;
-    border-top: 1px solid rgba(255,255,255,0.1); box-sizing: border-box;
-    position: absolute; bottom: 0; left: 0; 
-    display: flex; flex-direction: row !important; align-items: center; justify-content: center;
-    gap: 40px; z-index: 1000;
-  }
-  .footer-content { flex: 1; }
-  .footer-content p { margin: 0; word-break: keep-all; }
-  .footer-content p:last-child { font-weight: 700; margin-top: 8px; color: rgba(255,255,255,0.9); }
-  
-  /* QR 코드 스타일 */
-  .footer-qr-wrapper { display: flex; align-items: center; justify-content: center; }
-  .qr-code-img { width: 65px; height: 65px; background: white; padding: 4px; border-radius: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-  .qr-code-img:hover { transform: scale(1.1); }
-  
-  /* QR 확대 모달 스타일 */
-  .qr-zoom-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.92); 
-    z-index: 10000; display: none; align-items: center; justify-content: center; 
-    flex-direction: column; cursor: zoom-out; backdrop-filter: blur(10px);
-  }
-  .qr-zoom-overlay img { width: 400px; height: 400px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 0 50px rgba(56, 189, 248, 0.4); }
-
-  /* 확대 시 안내 문구 */
-  .qr-zoom-info { text-align: center; color: white; margin-top: 25px; line-height: 1.8; animation: fadeIn 0.4s ease-out; }
-  .qr-zoom-info .main-t { font-size: 20px; font-weight: 800; color: #38bdf8; margin-bottom: 10px; }
-  .qr-zoom-info .sub-t { font-size: 16px; opacity: 0.9; }
-  .qr-zoom-info .contact-t { font-size: 16px; font-weight: 700; margin-top: 5px; color: #facc15; }
-
-  .mobile-theme-float { display: none; }
-
-  @media (max-width: 768px) {
-    html, body { overflow-y: auto !important; height: auto !important; position: relative !important; }
-    header { padding: 0 10px; justify-content: space-between; }
-    .logo-text { position: absolute; left: 50%; transform: translateX(-50%); font-size: 16px !important; max-width: 90%; text-align: center; }
-    .content-wrapper { padding-top: 155px !important; padding-bottom: 120px; display: block; }
-    #cardContainer { flex-direction: column; flex-wrap: nowrap; }
-    .card { width: 100%; height: auto; min-height: 50px; flex-direction: row; padding: 10px 12px; gap: 15px; }
-    .icon-box { width: 36px; height: 36px; font-size: 18px; }
-    .main-footer { position: fixed !important; bottom: 0 !important; flex-direction: column !important; gap: 15px; }
-    .footer-qr-wrapper { display: none; }
-    .mobile-theme-float { display: flex !important; position: fixed; bottom: 25px; left: 15px; z-index: 6000; width: 36px; height: 36px; border-radius: 50%; background: var(--bg-card); align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-  }
+  /* 트리 에디터 */
+  .tree-container { display: flex; height: 500px; border: 1px solid var(--btn-border); border-radius: 10px; overflow: hidden; margin-top: 15px; }
+  .tree-sidebar { width: 35%; background: var(--bg-main); border-right: 1px solid var(--btn-border); overflow-y: auto; padding: 10px; }
+  .tree-content { width: 65%; padding: 20px; overflow-y: auto; background: var(--bg-card); }
+  .t-node-row { display: flex; align-items: center; padding: 4px 0; }
+  .t-toggle-btn { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px; }
+  .t-label { padding: 6px 10px; cursor: pointer; border-radius: 6px; font-size: 13px; flex: 1; }
+  .t-label.selected { background: #2563eb; color: #fff; }
+  .t-children { display: none; padding-left: 18px; border-left: 1px solid var(--btn-border); margin-left: 11px; }
+  .t-children.open { display: block; }
 
   #loadingSpinner { position: fixed; inset: 0; background: var(--bg-main); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
   .spinner { width: 50px; height: 50px; border: 5px solid #cbd5e1; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
   @keyframes spin { 100% { transform: rotate(360deg); } }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 768px) {
+    .logo-text { position: absolute; left: 50%; transform: translateX(-50%); font-size: 16px !important; }
+    .content-wrapper { padding-top: 155px !important; }
+    #cardContainer { flex-direction: column; }
+    .card { width: 100%; height: auto; flex-direction: row; padding: 10px 12px; gap: 15px; min-height: 50px; }
+    .icon-box { width: 36px; height: 36px; font-size: 18px; margin-bottom: 0; }
+    .main-footer { position: fixed !important; bottom: 0; flex-direction: column; gap: 10px; }
+  }
 </style>
 </head>
 <body>
 
 <div id="loadingSpinner"><div class="spinner"></div><div style="font-weight:700; color:#64748b;">시스템 로딩 중...</div></div>
-<div id="searchOverlay"></div>
+<div id="searchOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1500; display:none; backdrop-filter:blur(2px);"></div>
 
 <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div id="sidebar" class="sidebar">
-  <div class="sidebar-header"><span>전체 메뉴</span><div class="sidebar-close" onclick="toggleSidebar()">✕</div></div>
+  <div class="sidebar-header"><span>전체 메뉴</span><div style="cursor:pointer" onclick="toggleSidebar()">✕</div></div>
   <div class="sidebar-content" id="sidebarContent"></div>
 </div>
 
@@ -262,8 +162,8 @@
   <div class="header-center-title"><span id="pageHeadline" class="page-headline" onclick="editPageTitle()"></span><span id="pageBadge" class="page-badge">Page 1</span></div>
   <div class="header-right">
     <div class="theme-toggle">
-      <div class="theme-btn" id="btnDay" onclick="setTheme('light')"><svg viewBox="0 0 24 24"><path d="M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,5.29C7.24,6.03 7.06,6.79 7,7.59C6.94,8.39 7.03,9.19 7.26,9.95L3.34,7M3.36,17L7.26,14.04C7.03,14.81 6.94,15.61 7,16.41C7.06,17.21 7.24,17.97 7.5,18.71L3.36,17M20.65,7L16.74,9.95C16.97,9.19 17.06,8.39 17,7.59C16.94,6.79 16.76,6.03 16.5,5.29L20.65,7M20.64,17L16.5,18.71C16.76,17.97 16.94,17.21 17,16.41C17.06,15.61 16.97,14.81 16.74,14.04L20.64,17M12,22L9.61,18.58C10.35,18.85 11.16,19 12,19C12.84,19 13.65,18.85 14.39,18.58L12,22Z"/></svg></div>
-      <div class="theme-btn" id="btnNight" onclick="setTheme('dark')"><svg viewBox="0 0 24 24"><path d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C6.94,10.39 9.79,16.87 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z"/></svg></div>
+      <div class="theme-btn" id="btnDay" onclick="setTheme('light')">☀️</div>
+      <div class="theme-btn" id="btnNight" onclick="setTheme('dark')">🌙</div>
     </div>
     <div class="settings-btn" onclick="openSettings()">⚙️</div>
     <img src="logo.png" alt="KAC Logo" class="kac-logo-img">
@@ -272,49 +172,43 @@
 
 <div class="content-wrapper">
   <div class="center-content-box">
-    <div class="search-wrapper-outer"><div class="search-container"><input type="text" id="mainSearch" class="search-bar" placeholder="시설명 또는 교육 주제를 검색하세요..." autocomplete="off"><div id="searchResults" class="search-results"></div></div></div>
+    <div class="search-wrapper-outer">
+      <div class="search-container">
+        <input type="text" id="mainSearch" class="search-bar" placeholder="시설명 또는 교육 주제를 검색하세요..." autocomplete="off">
+        <div id="searchResults" class="search-results"></div>
+      </div>
+    </div>
     <div id="cardContainerWrapper"><main id="cardContainer"></main></div>
     <div id="pagination" class="pagination"></div>
   </div>
-  <div class="mobile-theme-float" onclick="toggleThemeMobile()"><svg viewBox="0 0 24 24"><path d="M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,5.29C7.24,6.03 7.06,6.79 7,7.59C6.94,8.39 7.03,9.19 7.26,9.95L3.34,7M3.36,17L7.26,14.04C7.03,14.81 6.94,15.61 7,16.41C7.06,17.21 7.24,17.97 7.5,18.71L3.36,17M20.65,7L16.74,9.95C16.97,9.19 17.06,8.39 17,7.59C16.94,6.79 16.76,6.03 16.5,5.29L20.65,7M20.64,17L16.5,18.71C16.76,17.97 16.94,17.21 17,16.41C17.06,15.61 16.97,14.81 16.74,14.04L20.64,17M12,22L9.61,18.58C10.35,18.85 11.16,19 12,19C12.84,19 13.65,18.85 14.39,18.58L12,22Z"/></svg></div>
   <footer class="main-footer">
     <div class="footer-qr-wrapper"><img id="qrCodeImg" src="" alt="QR" class="qr-code-img" onclick="zoomQR(true)"></div>
-    <div class="footer-content"></div>
-    <span class="footer-edit-btn" onclick="openFooterEditModal()">텍스트 수정</span>
+    <div class="footer-content" id="footerContent"></div>
+    <span style="cursor:pointer; font-size:11px; opacity:0.5;" onclick="openFooterEditModal()">수정</span>
   </footer>
 </div>
 
 <div id="qrZoomOverlay" class="qr-zoom-overlay" onclick="zoomQR(false)">
     <img id="qrZoomImg" src="" alt="QR">
-    <div class="qr-zoom-info">
-        <p class="main-t">QR코드를 찍으면 로그인 페이지로 안내됩니다.</p>
-        <p class="sub-t">비번을 모를 경우 관리자에게 문의하세요.</p>
-        <p class="contact-t">문의처 : jds0616@airport.co.kr (ds.Jang)</p>
+    <div style="text-align:center; color:white; margin-top:20px;">
+        <p style="font-size:18px; font-weight:800; color:#38bdf8;">QR코드를 찍으면 로그인 페이지로 안내됩니다.</p>
+        <p style="margin-top:10px;">문의 : jds0616@airport.co.kr (ds.Jang)</p>
     </div>
-    <p style="color:rgba(255,255,255,0.4); margin-top:40px; font-size:13px;">닫으려면 화면의 아무 곳이나 클릭하세요.</p>
 </div>
 
 <!-- 설정 모달 -->
 <div id="settingsModal" class="modal-overlay">
   <div class="modal-card">
     <div class="modal-title">⚙️ 시스템 설정</div>
-    <div id="guestSettings"><button class="btn-modal btn-primary" onclick="toggleAdmin()">관리자 로그인</button></div>
+    <div id="guestSettings"><button class="btn-modal" style="width:100%; padding:12px; background:#0f172a; color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer;" onclick="toggleAdmin()">관리자 로그인</button></div>
     <div id="adminSettings" style="display:none;">
-      <div class="setting-group">
-        <label class="setting-label">🛠️ 시스템 관리</label>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn-modal btn-danger" onclick="toggleAdmin()">로그아웃</button>
-          <button class="btn-modal btn-secondary" onclick="openPwChangeModal()">비밀번호 변경</button>
-          <button class="btn-modal" style="background:#e11d48; color:white;" onclick="saveToFirebase()">☁️ 플랫폼 전체 데이터 서버 전송</button>
-          <p style="font-size:11px; color:#e11d48; margin-top:8px; font-weight:700; width:100%;">※ 주의: Index, Facility, Viewer 정보를 서버에 덮어씌웁니다.</p>
-          <button id="modalPreviewBtn" class="btn-modal btn-secondary" onclick="togglePreview()">미리보기 모드</button>
-        </div>
-        <button class="btn-modal btn-primary" style="margin-top:10px; background:#4f46e5;" onclick="openIntegratedAdmin()"> 종합 관리 (Tree Editor)</button>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+          <button class="btn-modal" style="flex:1; background:#ef4444; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;" onclick="toggleAdmin()">로그아웃</button>
+          <button class="btn-modal" style="flex:1; background:#10b981; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;" onclick="saveToFirebase()">☁️ 서버 저장</button>
       </div>
-      <div class="setting-group"><label class="setting-label">↕️ 콘텐츠 위치 조정</label><input type="number" id="setContentTop" class="setting-input"></div>
-      <div class="setting-group"><label class="setting-label">🎨 UI 크기 설정</label><div style="display:flex; gap:15px;"><input type="number" id="setIconSize" class="setting-input" placeholder="아이콘"><input type="number" id="setLabelSize" class="setting-input" placeholder="라벨"></div><button class="btn-modal btn-primary" onclick="saveUISettings()">설정 적용</button></div>
+      <button class="btn-modal" style="width:100%; background:#4f46e5; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; margin-bottom:10px;" onclick="openIntegratedAdmin()">🗂️ 종합 관리 (Tree Editor)</button>
     </div>
-    <button class="btn-modal btn-secondary" onclick="document.getElementById('settingsModal').style.display='none'">닫기</button>
+    <button class="btn-modal" style="width:100%; background:#64748b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; margin-top:10px;" onclick="closeModal('settingsModal')">닫기</button>
   </div>
 </div>
 
@@ -322,125 +216,226 @@
 <div id="integratedAdminModal" class="modal-overlay">
   <div class="modal-card modal-card large">
     <div class="modal-title">🗂️ 전체 데이터 종합 관리</div>
-    <div class="tree-container"><div class="tree-sidebar" id="treeRoot"></div><div class="tree-content" id="treeDetail">항목 선택</div></div>
-    <div class="btn-row"><button class="btn-modal btn-primary" onclick="saveIntegratedData()">저장 및 적용</button><button class="btn-modal btn-secondary" onclick="document.getElementById('integratedAdminModal').style.display='none'">닫기</button></div>
+    <div class="tree-container">
+        <div class="tree-sidebar" id="treeRoot"></div>
+        <div class="tree-content" id="treeDetail">항목을 선택하세요.</div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn-modal" style="flex:1; background:#2563eb; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="saveIntegratedData()">저장 및 적용</button>
+        <button class="btn-modal" style="flex:1; background:#64748b; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="closeModal('integratedAdminModal')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 하단바 텍스트 수정 모달 -->
+<div id="footerEditModal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-title">📝 하단 문구 수정</div>
+    <textarea id="footerTextInput" style="width:100%; height:150px; padding:10px; border-radius:8px; border:1px solid #ddd;"></textarea>
+    <div style="display:flex; gap:10px; margin-top:15px;">
+        <button class="btn-modal" style="flex:1; background:#2563eb; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="saveFooterText()">저장</button>
+        <button class="btn-modal" style="flex:1; background:#64748b; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="closeModal('footerEditModal')">취소</button>
+    </div>
   </div>
 </div>
 
 <script>
+  // --- 전역 변수 및 초기화 ---
   function normalizeArray(v) { return Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : []); }
   let globalData = { categories: [], config: {}, security: {} };
-  let isAdmin = localStorage.getItem('kac_admin_mode') === '1', isPreview = localStorage.getItem('kac_preview_active') === '1';
-  let searchIndex = [], editingCardId = null, moveSrcIndex = -1, itemsPerPage = 5, currentPage = 1, dragSrcIndex = null, currentTreeSelection = null; 
+  let isAdmin = localStorage.getItem('kac_admin_mode') === '1';
+  let currentPage = 1, itemsPerPage = 5;
+  let searchIndex = [], currentTreeSelection = null;
 
-  function ensureAnonAuth() {
+  async function ensureAnonAuth() {
     return new Promise((resolve) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-        if (user) { unsubscribe(); resolve(); } 
-        else { firebase.auth().signInAnonymously().catch(() => { unsubscribe(); resolve(); }); }
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) resolve(); 
+        else firebase.auth().signInAnonymously().catch(() => resolve());
       });
     });
   }
 
-  async function init() {
-    document.getElementById('loadingSpinner').style.display = 'flex';
-    await ensureAnonAuth();
-    setTheme(localStorage.getItem('kac_theme') || 'light');
-    if (isPreview) document.body.classList.add('preview-active');
-    if (isAdmin) document.body.classList.add('admin-mode');
-
-    try {
-      const snapshot = await db.ref('/').once('value');
-      if (snapshot.exists()) {
-        globalData = snapshot.val();
-        globalData.categories = normalizeArray(globalData.categories);
-        syncToLocalStorage(globalData);
-        if(globalData.config) applyConfig(globalData.config);
-      } else { reconstructGlobalDataFromLocal(); }
-    } catch (e) { reconstructGlobalDataFromLocal(); }
-
-    const ct = localStorage.getItem('kac_content_top');
-    if(ct) document.querySelector('.content-wrapper').style.paddingTop = ct + 'px';
-    
-    loadFooterText(); ensurePageSlots(); renderCards(false); buildSearchIndex(); renderSidebar(); setupQRCode();
-    document.getElementById('loadingSpinner').style.opacity = '0';
-    setTimeout(() => document.getElementById('loadingSpinner').style.display='none', 500);
+  // --- 핵심 함수 구현 (무한 로딩 방지) ---
+  function applyConfig(cfg) {
+    if(!cfg) return;
+    if(cfg.iconSize) document.documentElement.style.setProperty('--icon-size-idx', cfg.iconSize + 'px');
+    if(cfg.labelSize) document.documentElement.style.setProperty('--label-size-idx', cfg.labelSize + 'px');
+    updateHeadline();
   }
 
-  function setupQRCode() {
-    const loginUrl = window.location.href.substring(0, window.location.href.lastIndexOf("/")) + "/login.html";
-    const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(loginUrl)}`;
-    const qrI = document.getElementById('qrCodeImg'), qrZ = document.getElementById('qrZoomImg');
-    if(qrI) qrI.src = qrApi; if(qrZ) qrZ.src = qrApi;
-  }
-  function zoomQR(s) { document.getElementById('qrZoomOverlay').style.display = s ? 'flex' : 'none'; }
-
-  function loadFooterText() {
-    let s = globalData.config.footerText || localStorage.getItem('kac_full_footer');
-    document.querySelector('.footer-content').innerHTML = s || "<p>© 2026 Korea Airports Corporation.</p>";
+  function updateHeadline() {
+    const titles = globalData.config.pageTitles || {};
+    document.getElementById('pageHeadline').textContent = titles[currentPage] || "항행안전시설 교육 플랫폼";
+    document.getElementById('pageBadge').textContent = `Page ${currentPage}`;
   }
 
-  function openFooterEditModal() {
-    document.getElementById('footerTextInput').value = document.querySelector('.footer-content').innerHTML.replace(/<\/p>/gi, "\n").replace(/<p[^>]*>/gi, "").trim();
-    document.getElementById('footerEditModal').style.display = 'flex';
+  function editPageTitle() {
+    if(!isAdmin) return;
+    const newVal = prompt("페이지 제목을 입력하세요", document.getElementById('pageHeadline').textContent);
+    if(newVal) {
+        if(!globalData.config.pageTitles) globalData.config.pageTitles = {};
+        globalData.config.pageTitles[currentPage] = newVal;
+        updateHeadline();
+    }
   }
 
-  function saveFooterText() {
-    let h = ''; document.getElementById('footerTextInput').value.split('\n').forEach(l => { if(l.trim()) h += `<p>${l.trim()}</p>`; });
-    globalData.config.footerText = h; syncToLocalStorage(globalData); loadFooterText(); document.getElementById('footerEditModal').style.display = 'none';
+  function ensurePageSlots() {
+    if(!globalData.categories) globalData.categories = [];
+    const count = globalData.categories.length;
+    const needed = Math.ceil(count / itemsPerPage) * itemsPerPage || itemsPerPage;
+    for(let i=count; i<needed; i++) globalData.categories.push(null);
+  }
+
+  function reconstructGlobalDataFromLocal() {
+    const order = JSON.parse(localStorage.getItem('kac_index_order') || '[]');
+    globalData.categories = order.map(id => {
+      if(!id) return null;
+      const style = JSON.parse(localStorage.getItem(`kac_style_${id}`) || '{}');
+      const menus = JSON.parse(localStorage.getItem(`kac_menu_${id}`) || '[]');
+      return { id, ...style, menus };
+    });
   }
 
   function syncToLocalStorage(data) {
-    const o = []; if (!data.categories) return;
+    const order = [];
     data.categories.forEach(cat => {
       if(cat) {
-        o.push(cat.id);
-        localStorage.setItem(`kac_style_${cat.id}`, JSON.stringify({ name: cat.name, code: cat.code, color: cat.color, access: cat.access }));
-        const ms = cat.menus || [];
-        localStorage.setItem(`kac_menu_${cat.id}`, JSON.stringify(ms.map(m=>({dataId:m.id, label:m.label, line1:m.line1, line2:m.line2, link:m.link, visible:m.visible!==false}))));
-        ms.forEach(m => { if(m.subjects) localStorage.setItem(`kac_subs_${cat.id}_${m.id}`, JSON.stringify(m.subjects)); });
-      } else o.push(null);
+        order.push(cat.id);
+        localStorage.setItem(`kac_style_${cat.id}`, JSON.stringify({name:cat.name, code:cat.code, color:cat.color, access:cat.access}));
+      } else order.push(null);
     });
-    localStorage.setItem('kac_index_order', JSON.stringify(o));
+    localStorage.setItem('kac_index_order', JSON.stringify(order));
   }
 
+  // --- 렌더링 함수 ---
   function renderCards(anim) {
-    const container = document.getElementById('cardContainer'), pag = document.getElementById('pagination'), isMob = window.innerWidth <= 768;
+    const container = document.getElementById('cardContainer');
+    const pag = document.getElementById('pagination');
     container.innerHTML = ''; pag.innerHTML = '';
-    let list = isAdmin ? globalData.categories : globalData.categories.filter(c => c && c.access?.visible!==false);
+    const list = isAdmin ? globalData.categories : globalData.categories.filter(c => c && c.access?.visible !== false);
+    const isMob = window.innerWidth <= 768;
 
     if(isMob) {
-      list.filter(c=>c).forEach((c, i) => createCard(c, globalData.categories.indexOf(c), container));
+      list.forEach(c => c && createCard(c, container));
     } else {
       const tp = Math.ceil(list.length / itemsPerPage) || 1;
       const start = (currentPage - 1) * itemsPerPage;
-      list.slice(start, start + itemsPerPage).forEach((c, i) => createCard(c, start + i, container));
+      list.slice(start, start + itemsPerPage).forEach(c => c && createCard(c, container));
       for(let i=1; i<=tp; i++) {
-        const d = document.createElement('div'); d.className = `page-dot ${i===currentPage?'active':''}`;
-        d.onclick = () => { currentPage=i; renderCards(true); }; pag.appendChild(d);
+        const dot = document.createElement('div');
+        dot.className = `page-dot ${i===currentPage?'active':''}`;
+        dot.onclick = () => { currentPage = i; renderCards(); };
+        pag.appendChild(dot);
       }
     }
     updateHeadline();
   }
 
-  function createCard(c, idx, target) {
+  function createCard(c, target) {
     const div = document.createElement('div');
-    if(c) {
-      div.className = 'card'; div.style.setProperty('--card-color', c.color);
-      div.onclick = () => location.href = `facility.html?type=${c.id}`;
-      div.innerHTML = `<div class="icon-box">${c.code}</div><h2>${c.name}</h2>`;
-    } else { div.className = 'card empty-placeholder'; }
+    div.className = 'card';
+    div.style.setProperty('--card-color', c.color || '#64748b');
+    div.onclick = () => location.href = `facility.html?type=${c.id}`;
+    div.innerHTML = `<div class="icon-box">${c.code || '?'}</div><h2>${c.name}</h2>`;
     target.appendChild(div);
   }
 
-  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
-  function setTheme(m) { document.body.className = m==='dark'?'dark-mode':''; localStorage.setItem('kac_theme', m); }
-  function openSettings() { document.getElementById('guestSettings').style.display = isAdmin?'none':'block'; document.getElementById('adminSettings').style.display = isAdmin?'block':'none'; document.getElementById('settingsModal').style.display='flex'; }
-  async function toggleAdmin() { if(isAdmin) { localStorage.setItem('kac_admin_mode','0'); location.reload(); } else { const pw = prompt("관리자 비번"); if(pw) { localStorage.setItem('kac_admin_mode','1'); location.reload(); } } }
+  function renderSidebar() {
+    const container = document.getElementById('sidebarContent');
+    container.innerHTML = '';
+    globalData.categories.forEach(cat => {
+      if(!cat || (cat.access?.visible === false && !isAdmin)) return;
+      const div = document.createElement('div');
+      div.className = 'sb-item';
+      div.textContent = cat.name;
+      div.onclick = () => location.href = `facility.html?type=${cat.id}`;
+      container.appendChild(div);
+    });
+  }
 
-  async function saveToFirebase() {
-    if(!confirm("서버에 덮어쓰시겠습니까?")) return;
-    try { await db.ref('/').set(globalData); alert("저장 완료"); } catch(e) { alert("실패"); }
+  function buildSearchIndex() {
+    searchIndex = [];
+    globalData.categories.forEach(cat => {
+      if(!cat || !cat.menus) return;
+      cat.menus.forEach(m => {
+        searchIndex.push({ name: m.label, catId: cat.id, catName: cat.name });
+      });
+    });
+  }
+
+  // --- 통합 관리 (Tree Editor) ---
+  function openIntegratedAdmin() {
+    closeModal('settingsModal');
+    document.getElementById('integratedAdminModal').style.display = 'flex';
+    renderTree();
+  }
+
+  function renderTree() {
+    const root = document.getElementById('treeRoot');
+    root.innerHTML = '';
+    globalData.categories.forEach((cat, cIdx) => {
+        if(!cat) return;
+        const div = document.createElement('div');
+        div.className = 't-node-row';
+        div.innerHTML = `<div class="t-toggle-btn">▼</div><div class="t-label" onclick="selectTreeNode('cat', ${cIdx})">📂 ${cat.name}</div>`;
+        root.appendChild(div);
+    });
+  }
+
+  function selectTreeNode(type, idx) {
+    currentTreeSelection = { type, idx };
+    const detail = document.getElementById('treeDetail');
+    if(type === 'cat') {
+        const cat = globalData.categories[idx];
+        detail.innerHTML = `<h3>카테고리 수정</h3>명칭: <input type="text" id="editTreeName" value="${cat.name}" style="width:100%; padding:8px; margin:10px 0;">`;
+    }
+  }
+
+  function saveIntegratedData() {
+    if(currentTreeSelection?.type === 'cat') {
+        globalData.categories[currentTreeSelection.idx].name = document.getElementById('editTreeName').value;
+    }
+    renderCards(); renderSidebar();
+    alert("적용되었습니다.");
+  }
+
+  // --- 기타 기능 ---
+  function setupQRCode() {
+    const url = window.location.href.split('index.html')[0] + "login.html";
+    const api = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+    document.getElementById('qrCodeImg').src = api;
+    document.getElementById('qrZoomImg').src = api;
+  }
+  function zoomQR(s) { document.getElementById('qrZoomOverlay').style.display = s ? 'flex' : 'none'; }
+  function loadFooterText() { document.getElementById('footerContent').innerHTML = globalData.config.footerText || "<p>© 2026 Korea Airports Corporation.</p>"; }
+  function openFooterEditModal() { document.getElementById('footerTextInput').value = document.getElementById('footerContent').innerText; document.getElementById('footerEditModal').style.display = 'flex'; }
+  function saveFooterText() { globalData.config.footerText = `<p>${document.getElementById('footerTextInput').value}</p>`; loadFooterText(); closeModal('footerEditModal'); }
+  function openSettings() { document.getElementById('adminSettings').style.display = isAdmin ? 'block' : 'none'; document.getElementById('guestSettings').style.display = isAdmin ? 'none' : 'block'; document.getElementById('settingsModal').style.display = 'flex'; }
+  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
+  function setTheme(m) { document.body.className = m === 'dark' ? 'dark-mode' : ''; localStorage.setItem('kac_theme', m); }
+  function toggleThemeMobile() { setTheme(localStorage.getItem('kac_theme') === 'dark' ? 'light' : 'dark'); }
+  async function toggleAdmin() { if(isAdmin) { localStorage.removeItem('kac_admin_mode'); location.reload(); } else { const pw = prompt("관리자 비번"); if(pw === "CATC1234") { localStorage.setItem('kac_admin_mode', '1'); location.reload(); } } }
+  async function saveToFirebase() { if(confirm("서버에 저장하시겠습니까?")) { try { await db.ref('/').set(globalData); alert("저장 완료"); } catch(e) { alert("저장 실패"); } } }
+
+  // --- 시스템 시작 ---
+  async function init() {
+    await ensureAnonAuth();
+    setTheme(localStorage.getItem('kac_theme') || 'light');
+    try {
+      const snap = await db.ref('/').once('value');
+      if(snap.exists()) {
+        globalData = snap.val();
+        globalData.categories = normalizeArray(globalData.categories);
+        syncToLocalStorage(globalData);
+        if(globalData.config) applyConfig(globalData.config);
+      } else reconstructGlobalDataFromLocal();
+    } catch(e) { reconstructGlobalDataFromLocal(); }
+    
+    ensurePageSlots(); renderCards(); renderSidebar(); buildSearchIndex(); setupQRCode(); loadFooterText();
+    document.getElementById('loadingSpinner').style.opacity = '0';
+    setTimeout(() => document.getElementById('loadingSpinner').style.display='none', 500);
   }
 
   init();
