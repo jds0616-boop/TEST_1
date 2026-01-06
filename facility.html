@@ -3,10 +3,10 @@
 <html lang="ko">
 <head>
 <script>
-  // [보안] 로그인 세션 체크 및 스마트 리다이렉트
+  // [보안] 로그인 세션 체크
   if(sessionStorage.getItem('kac_access_token') !== 'granted') {
-    // 현재 보고 있는 주소를 기억한 상태로 로그인 페이지로 이동합니다.
-    location.replace('login.html?redirect=' + encodeURIComponent(window.location.href));
+    alert("로그인이 필요합니다.");
+    location.replace('login.html');
   }
 </script>
 <meta charset="UTF-8" />
@@ -16,8 +16,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<!-- [추가] QR 코드 생성 라이브러리 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -581,11 +579,6 @@
                 <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 홈으로 이동
             </div>
-            <!-- [추가] 시설 공유 버튼 -->
-            <div class="card-home-btn" style="border-top: 1px solid rgba(var(--theme-rgb), 0.1); color: #64748b;" onclick="toggleFacQrModal(event)">
-                <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M3,11h2v-2h-2V11z M3,17h2v-2h-2V17z M7,11h2v-2h-2V11z M10,11h2v-2h-2V11z M10,17h2v-2h-2V17z M7,17h2v-2h-2V17z M13,11h2v-2h-2V11z M13,17h2v-2h-2V17z M16,11h2v-2h-2V11z M16,17h2v-2h-2V17z M19,11h2v-2h-2V11z M19,17h2v-2h-2V17z"/></svg>
-                &nbsp;시설 공유 (QR)
-            </div>
             <div class="triangle-pointer"></div>
         </div>
       </div>
@@ -622,6 +615,13 @@
         <div class="setting-group">
             <button class="btn-modal btn-danger" onclick="toggleAdmin()">로그아웃</button>
             <button id="modalPreviewBtn" class="btn-modal" onclick="togglePreview()">미리보기 모드</button>
+            
+            <button class="btn-modal" style="background: #4f46e5; color: white; margin-top: 15px; border: 2px solid #ffffff33;" onclick="saveCurrentDataToFirebase()">
+                ☁️ 현재 시설 데이터 서버 전송 (Firebase)
+            </button>
+            <p style="font-size: 11px; color: #64748b; margin-top: 5px; text-align: center;">
+                * 현재 보고 있는 이 시설의 메뉴 구성만 서버에 즉시 반영합니다.
+            </p>
         </div>
         <div class="setting-group" style="background:rgba(0,0,0,0.03); padding:15px; border-radius:10px; margin-top:15px;">
             <label class="setting-label">🎨 화면 레이아웃 & UI</label>
@@ -680,18 +680,6 @@
     <div style="margin-top:20px; display:flex; gap:10px;">
         <button class="btn-modal btn-primary" onclick="saveBulkData()">전체 저장</button>
         <button class="btn-modal" style="background:#e2e8f0; color:#333" onclick="closeModal('bulkEditModal')">취소</button>
-    </div>
-  </div>
-</div>
-
-<!-- [추가] 시설 QR 코드 모달 -->
-<div id="facQrModal" class="modal-overlay" onclick="toggleFacQrModal(event)">
-  <div class="modal-card" style="text-align:center;" onclick="event.stopPropagation()">
-    <h3>📂 시설 리스트 공유</h3>
-    <p style="font-size:13px; color:var(--text-sub); margin-bottom:20px;">현재 시설 카테고리를 모바일로 확인하세요.</p>
-    <div id="facQrcode" style="display:inline-block; padding:15px; background:#fff; border-radius:12px; border: 1px solid #e2e8f0;"></div>
-    <div style="margin-top:20px;">
-        <button class="btn-modal btn-secondary" onclick="toggleFacQrModal(event)">닫기</button>
     </div>
   </div>
 </div>
@@ -984,7 +972,7 @@
 
           bar.innerHTML = `
               <div class="last-viewed-icon">
-                <svg class="icon-pc" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <svg class="icon-pc" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5-2.24 5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                 <svg class="icon-mobile" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 <span>Last Viewed</span>
               </div>
@@ -1101,11 +1089,35 @@
       closeModal('itemEditModal');
   }
 
-  function deleteMenu(idx) {
-      if(confirm("정말 삭제하시겠습니까?")) {
-          menus.splice(idx, 1);
-          localStorage.setItem(`kac_menu_${type}`, JSON.stringify(menus));
-          render();
+  // [수정] 메뉴 삭제 함수 (강력 경고 + 비번 확인)
+  async function deleteMenu(idx) {
+      const menuLabel = menus[idx].label;
+      
+      // 1차 경고
+      const warningMsg = `⚠️ [강력 경고]\n'${menuLabel}' 메뉴를 삭제할 경우,\n이 메뉴에 포함된 모든 하위 과목(PDF, 오디오 리스트)도 함께 영구 삭제됩니다.\n\n정말로 삭제하시겠습니까?`;
+      
+      if(confirm(warningMsg)) {
+          // 2차 비번 확인
+          const pw = prompt("삭제를 확정하려면 관리자 비밀번호를 입력하세요.");
+          if(!pw) return;
+
+          try {
+              const inputHash = await sha256(pw.toUpperCase());
+              const snapshot = await db.ref('security/admin_pw').once('value');
+              let serverHash = snapshot.val();
+              if(!serverHash) serverHash = "db2d3257df630ebeb488b0a9435b863702a0a25694205626359045b8427f311c";
+
+              if(inputHash === serverHash) {
+                  menus.splice(idx, 1);
+                  localStorage.setItem(`kac_menu_${type}`, JSON.stringify(menus));
+                  render();
+                  alert("삭제되었습니다.\n최종 반영을 위해 반드시 '현재 시설 데이터 서버 전송' 버튼을 눌러주세요.");
+              } else {
+                  alert("비밀번호가 틀렸습니다. 삭제할 수 없습니다.");
+              }
+          } catch(e) {
+              alert("인증 오류가 발생했습니다.");
+          }
       }
   }
   
@@ -1185,7 +1197,8 @@
       document.documentElement.style.setProperty('--layout-x-pos', val + 'px');
   }
   
-  function saveUISettings() {
+  // [수정] UI 설정 저장 시 로컬 + 서버 동시 저장
+  async function saveUISettings() {
       const iSize = document.getElementById('setFacIconSize').value;
       const lSize = document.getElementById('setFacLabelSize').value;
       const xPos = document.getElementById('setLayoutX').value;
@@ -1194,9 +1207,24 @@
       localStorage.setItem('kac_fac_label_size', lSize);
       localStorage.setItem('kac_fac_layout_x', xPos);
       
+      try {
+          const snapshot = await db.ref('/').once('value');
+          let fullData = snapshot.val() || {};
+          if(!fullData.config) fullData.config = {};
+          
+          fullData.config.facIconSize = iSize;
+          fullData.config.facLabelSize = lSize;
+          fullData.config.facLayoutX = xPos;
+          
+          await db.ref('/').set(fullData);
+          alert("UI 설정이 서버에 성공적으로 저장되었습니다.");
+      } catch(e) {
+          console.error(e);
+          alert("로컬에는 적용되었으나 서버 저장에 실패했습니다.");
+      }
+      
       loadUISettings();
       closeModal('settingsModal');
-      alert("설정이 저장되었습니다.");
   }
   
   function togglePreview() {
@@ -1372,28 +1400,57 @@ function renderSidebar() {
     sRes.classList.add('active');
   };
 
-  // [추가] 시설 QR 코드 생성 및 토글 함수
-  function toggleFacQrModal(e) {
-      if (e) e.stopPropagation();
-      const modal = document.getElementById('facQrModal');
-      const qrContainer = document.getElementById('facQrcode');
+  // [추가] 현재 보고 있는 시설(카테고리)의 데이터만 서버에 전송하는 함수
+  async function saveCurrentDataToFirebase() {
+      if(!isAdmin) return alert("관리자 권한이 없습니다.");
       
-      if (modal.style.display === 'none' || modal.style.display === '') {
-          qrContainer.innerHTML = '';
-          // 현재 페이지 URL을 그대로 읽어옴
-          const currentUrl = window.location.href;
+      const styleData = JSON.parse(localStorage.getItem(`kac_style_${type}`) || '{}');
+      const facilityName = styleData.name || "현재 시설";
+
+      if(!confirm(`[${facilityName}] 시설의 변경사항을 서버에 전송하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
+
+      const btn = event.target;
+      const originalText = btn.innerText;
+      btn.innerText = "전송 중...";
+      btn.disabled = true;
+
+      try {
+          // 1. 서버 전체 데이터 로드
+          const snapshot = await db.ref('/').once('value');
+          let fullData = snapshot.val();
           
-          new QRCode(qrContainer, {
-              text: currentUrl,
-              width: 180,
-              height: 180,
-              colorDark : "#0f172a",
-              colorLight : "#ffffff",
-              correctLevel : QRCode.CorrectLevel.H
-          });
-          modal.style.display = 'flex';
-      } else {
-          modal.style.display = 'none';
+          if(!fullData || !fullData.categories) throw new Error("서버 데이터를 불러올 수 없습니다.");
+
+          // 2. 현재 카테고리(type) 찾기
+          const catIdx = fullData.categories.findIndex(c => c && c.id === type);
+          
+          if(catIdx !== -1) {
+              // 3. 현재 페이지의 menus 데이터를 서버 구조에 맞게 매핑
+              fullData.categories[catIdx].menus = menus.map(m => {
+                  const subjects = JSON.parse(localStorage.getItem(`kac_subs_${type}_${m.dataId}`) || '[]');
+                  return {
+                      id: m.dataId,
+                      label: m.label,
+                      line1: m.line1,
+                      line2: m.line2,
+                      link: m.link,
+                      visible: m.visible !== false,
+                      subjects: subjects 
+                  };
+              });
+
+              // 4. 최종 서버 저장
+              await db.ref('/').set(fullData);
+              alert(`✅ [${facilityName}] 데이터가 서버로 전송되었습니다.\n이제 인덱스 페이지의 '전체 저장'을 누르지 않아도 반영됩니다.`);
+          } else {
+              alert("해당 시설을 서버 데이터에서 찾을 수 없습니다.");
+          }
+      } catch(e) {
+          console.error(e);
+          alert("전송 실패: " + e.message);
+      } finally {
+          btn.innerText = originalText;
+          btn.disabled = false;
       }
   }
 
